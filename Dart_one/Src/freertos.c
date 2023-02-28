@@ -183,10 +183,10 @@ void dart_shoot_init(void const * argument)
     if(rc_ctrl.rc.s[0]==1) //飞标发射
     {
       //给出速度期望值
-      dart.motor[0].target_speed = 10000;
-      dart.motor[1].target_speed = 10000;
-      dart.motor[2].target_speed = -10000;
-      dart.motor[3].target_speed = -10000;
+      dart.motor[0].target_speed = 5000;
+      dart.motor[1].target_speed = 5000;
+      dart.motor[2].target_speed = -5000;
+      dart.motor[3].target_speed = -5000;
     }
     else 
     {
@@ -225,18 +225,21 @@ void dart_reload_init(void const * argument)
 {
   /* USER CODE BEGIN dart_reload_init */
   dart_reload_reset(&dart);
+
+  pid_init(&dart.motor_speed_pid[4],5,0.01,0,30000,30000);
+  
   /* Infinite loop */
   for(;;)
   {
     if(rc_ctrl.rc.s[1]==1)//向上装填
     {
       //给出速度期望值
-      dart.motor[4].target_speed = 100;
+      dart.motor[4].target_speed =  5000;
     }
-    if(rc_ctrl.rc.s[1]==2)//向下
+    else if(rc_ctrl.rc.s[1]==2)//向下
     {
       //给出速度期望值
-      dart.motor[4].target_speed = -100;
+      dart.motor[4].target_speed = -5000;
     }
     else
     {
@@ -249,7 +252,7 @@ void dart_reload_init(void const * argument)
                                                       dart.motor[4].motor_measure.speed_rpm);
     
     //can信号发送至电机
-    CAN_cmd_motor(1,dart.motor[4].give_voltage,0,0,0);
+    //CAN_cmd_motor_2(1,dart.motor[4].give_voltage);
     osDelay(1);
   }
   /* USER CODE END dart_reload_init */
@@ -268,6 +271,40 @@ void dart_tb660_init(void const * argument)
   /* Infinite loop */
   for(;;)
   {
+    if(rc_ctrl.rc.ch[0]<1024)
+    { 
+      HAL_GPIO_WritePin(GPIOD,GPIO_PIN_15,RESET);
+      HAL_GPIO_WritePin(GPIOD,GPIO_PIN_14,SET);
+      HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,SET);
+      HAL_Delay(10);
+      HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,RESET);
+      HAL_Delay(10);
+    }
+    if(rc_ctrl.rc.ch[0]>1024)
+    { HAL_GPIO_WritePin(GPIOD,GPIO_PIN_15,SET);
+      HAL_GPIO_WritePin(GPIOD,GPIO_PIN_14,RESET);
+      HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,SET);
+      HAL_Delay(1);
+      HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,RESET);
+      HAL_Delay(1);
+    }
+    if(rc_ctrl.rc.ch[1]<1024)
+    { HAL_GPIO_WritePin(GPIOI,GPIO_PIN_6,SET);
+      HAL_GPIO_WritePin(GPIOI,GPIO_PIN_7,SET);
+      HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,SET);
+      HAL_Delay(1);
+      HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,RESET);
+      HAL_Delay(1);
+    }
+    if(rc_ctrl.rc.ch[1]>1024)
+    { HAL_GPIO_WritePin(GPIOI,GPIO_PIN_6,SET);
+      HAL_GPIO_WritePin(GPIOI,GPIO_PIN_7,RESET);
+      HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,SET);
+      HAL_Delay(1);
+      HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,RESET);
+      HAL_Delay(1);
+    }
+
     osDelay(1);
   }
   /* USER CODE END dart_tb660_init */

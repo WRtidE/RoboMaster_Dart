@@ -15,5 +15,5 @@
   */
 
 extern void CAN_cmd_motor(uint8_t id_dange,int16_t m1, int16_t m2, int16_t m3, int16_t m4);
-
+extern void CAN_cmd_motor_2(uint8_t id_range,int16_t m1);
 #endif
