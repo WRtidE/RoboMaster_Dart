@@ -183,10 +183,10 @@ void dart_shoot_init(void const * argument)
     if(rc_ctrl.rc.s[0]==1) //飞标发射
     {
       //给出速度期望值
-      dart.motor[0].target_speed = 5000;
-      dart.motor[1].target_speed = 5000;
-      dart.motor[2].target_speed = -5000;
-      dart.motor[3].target_speed = -5000;
+      dart.motor[0].target_speed =  9000; 
+      dart.motor[1].target_speed =  9000;
+      dart.motor[2].target_speed = -9000;
+      dart.motor[3].target_speed = -9000;
     }
     else 
     {
@@ -234,12 +234,12 @@ void dart_reload_init(void const * argument)
     if(rc_ctrl.rc.s[1]==1)//向上装填
     {
       //给出速度期望值
-      dart.motor[4].target_speed =  5000;
+      dart.motor[4].target_speed =  8000;
     }
     else if(rc_ctrl.rc.s[1]==2)//向下
     {
       //给出速度期望值
-      dart.motor[4].target_speed = -5000;
+      dart.motor[4].target_speed = -8000;
     }
     else
     {
@@ -273,36 +273,35 @@ void dart_tb660_init(void const * argument)
   {
     if(rc_ctrl.rc.ch[0]<1024)
     { 
-      HAL_GPIO_WritePin(GPIOD,GPIO_PIN_15,RESET);
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_14,SET);
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,SET);
-      HAL_Delay(10);
+      osDelay(1);
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,RESET);
-      HAL_Delay(10);
+      osDelay(1);
     }
     if(rc_ctrl.rc.ch[0]>1024)
-    { HAL_GPIO_WritePin(GPIOD,GPIO_PIN_15,SET);
+    { 
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_14,RESET);
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,SET);
-      HAL_Delay(1);
+      osDelay(1);
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,RESET);
-      HAL_Delay(1);
+      osDelay(1);
     }
     if(rc_ctrl.rc.ch[1]<1024)
-    { HAL_GPIO_WritePin(GPIOI,GPIO_PIN_6,SET);
+    { 
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_7,SET);
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,SET);
-      HAL_Delay(1);
+      osDelay(1);
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,RESET);
-      HAL_Delay(1);
+      osDelay(1);
     }
     if(rc_ctrl.rc.ch[1]>1024)
-    { HAL_GPIO_WritePin(GPIOI,GPIO_PIN_6,SET);
+    { 
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_7,RESET);
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,SET);
-      HAL_Delay(1);
+      osDelay(1);
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,RESET);
-      HAL_Delay(1);
+      osDelay(1);
     }
 
     osDelay(1);
