@@ -252,7 +252,7 @@ void dart_reload_init(void const * argument)
                                                       dart.motor[4].motor_measure.speed_rpm);
     
     //can信号发送至电机
-    //CAN_cmd_motor_2(1,dart.motor[4].give_voltage);
+    CAN_cmd_motor(1,dart.motor[4].give_voltage,0,0,0);
     osDelay(1);
   }
   /* USER CODE END dart_reload_init */

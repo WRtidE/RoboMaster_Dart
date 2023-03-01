@@ -34,7 +34,7 @@ typedef struct
     pid_struct_t motor_speed_pid[5];    //四个电机的pid
 }dart_control;
 
-dart_control dart;
+dart_control   dart;
 
 extern void dart_shoot_reset(dart_control *_dart);
 extern void dart_reload_reset(dart_control *_dart);

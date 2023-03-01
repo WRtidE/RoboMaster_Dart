@@ -61,8 +61,9 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 
 void CAN_cmd_motor(uint8_t id_range,int16_t m1, int16_t m2, int16_t m3, int16_t m4)
 {
+
     uint32_t send_mail_box;
-    motor_tx_message.StdId = 0x200;
+    motor_tx_message.StdId = (id_range == 0)?(0x200):(0x1ff);
     motor_tx_message.IDE = CAN_ID_STD;
     motor_tx_message.RTR = CAN_RTR_DATA;  
     motor_tx_message.DLC = 0x08;  
@@ -77,41 +78,41 @@ void CAN_cmd_motor(uint8_t id_range,int16_t m1, int16_t m2, int16_t m3, int16_t 
     HAL_CAN_AddTxMessage(&hcan1, &motor_tx_message, motor_can_send_data, &send_mail_box);
 }
 
-void CAN_cmd_motor_2(uint8_t id_range,int16_t m1)
-{
-    uint32_t send_mail_box;
-    motor_tx_message.StdId = 0x1FF;
-    motor_tx_message.IDE = CAN_ID_STD;
-    motor_tx_message.RTR = CAN_RTR_DATA;  
-    motor_tx_message.DLC = 0x08;  
-    motor_can_send_data[0] = (m1 >> 8);
-    motor_can_send_data[1] = m1;
-    motor_can_send_data[2] = (m1 >> 8);
-    motor_can_send_data[3] = m1;
-    motor_can_send_data[4] = (m1 >> 8);  
-    motor_can_send_data[5] = m1;
-    motor_can_send_data[6] = (m1 >> 8);
-    motor_can_send_data[7] = m1;
-    HAL_CAN_AddTxMessage(&hcan1, &motor_tx_message, motor_can_send_data, &send_mail_box);
-}
-
-// void CAN_cmd_motor_reset_ID(void)
+// void CAN_cmd_motor_2(uint8_t id_range,int16_t m1)
 // {
 //     uint32_t send_mail_box;
-//     motor_tx_message.StdId = 0x200; 
+//     motor_tx_message.StdId = 0x1FF;
 //     motor_tx_message.IDE = CAN_ID_STD;
 //     motor_tx_message.RTR = CAN_RTR_DATA;  
-//     motor_tx_message.DLC = 0x08;
-//     motor_can_send_data[0] = 0;
-//     motor_can_send_data[1] = 0;
-//     motor_can_send_data[2] = 0;
-//     motor_can_send_data[3] = 0;
-//     motor_can_send_data[4] = 0; 
-//     motor_can_send_data[5] = 0;
-//     motor_can_send_data[6] = 0;
-//     motor_can_send_data[7] = 0;
-//     HAL_CAN_AddTxMessage(&hcan1,  &motor_tx_message, motor_can_send_data, &send_mail_box);
+//     motor_tx_message.DLC = 0x08;  
+//     motor_can_send_data[0] = (m1 >> 8);
+//     motor_can_send_data[1] = m1;
+//     motor_can_send_data[2] = (m1 >> 8);
+//     motor_can_send_data[3] = m1;
+//     motor_can_send_data[4] = (m1 >> 8);  
+//     motor_can_send_data[5] = m1;
+//     motor_can_send_data[6] = (m1 >> 8);
+//     motor_can_send_data[7] = m1;
+//     HAL_CAN_AddTxMessage(&hcan1, &motor_tx_message, motor_can_send_data, &send_mail_box);
 // }
+
+void CAN_cmd_motor_reset_ID(void)
+{
+    uint32_t send_mail_box;
+    motor_tx_message.StdId = 0x200; 
+    motor_tx_message.IDE = CAN_ID_STD;
+    motor_tx_message.RTR = CAN_RTR_DATA;  
+    motor_tx_message.DLC = 0x08;
+    motor_can_send_data[0] = 0;
+    motor_can_send_data[1] = 0;
+    motor_can_send_data[2] = 0;
+    motor_can_send_data[3] = 0;
+    motor_can_send_data[4] = 0; 
+    motor_can_send_data[5] = 0;
+    motor_can_send_data[6] = 0;
+    motor_can_send_data[7] = 0;
+    HAL_CAN_AddTxMessage(&hcan1,  &motor_tx_message, motor_can_send_data, &send_mail_box);
+}
 
 //-------------------------------------------------------------------------------
 
