@@ -28,7 +28,7 @@
 #include "PID.h"
 #include "motor.h"
 #include "CAN_receive.h"
-
+#include "Delay.h"
 
 #define MOTOR_SPEED_PID_KP  20.0f
 #define MOTOR_SPEED_PID_KI  0.1f
@@ -235,11 +235,11 @@ void dart_reload_init(void const * argument)
     if(rc_ctrl.rc.s[1]==1)//向上装填
     {
       //给出速度期望值
-      dart.motor[4].target_speed =  8000;
+      dart.motor[4].target_speed =  20000;
     }
     else if(rc_ctrl.rc.s[1]==2)//向下
     {
-      dart.motor[4].target_speed = -8000;
+      dart.motor[4].target_speed = -20000;
     }
     else
     {
@@ -270,37 +270,39 @@ void dart_tb660_init(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    if(rc_ctrl.rc.ch[0]<1024)
+    if(rc_ctrl.rc.ch[0]<900)
     { 
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_14,SET);
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,SET);
-      osDelay(1);
+      Delay_us(10);
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,RESET);
-      osDelay(1);
+      Delay_us(10);
     }
-    if(rc_ctrl.rc.ch[0]>1024)
+    if(rc_ctrl.rc.ch[0]>1300)
     { 
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_14,RESET);
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,SET);
-      osDelay(1);
+      Delay_us(10);
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,RESET);
-      osDelay(1);
+      Delay_us(10);
     }
-    if(rc_ctrl.rc.ch[1]<1024)
+    if(rc_ctrl.rc.ch[3]<900)
     { 
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_7,SET);
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,SET);
-      osDelay(1);
+      // osDelay(1);
+      Delay_us(100);
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,RESET);
-      osDelay(1);
+      // osDelay(1);
+      Delay_us(100);
     }
-    if(rc_ctrl.rc.ch[1]>1024)
+    if(rc_ctrl.rc.ch[3]>1300)
     { 
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_7,RESET);
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,SET);
-      osDelay(1);
+      Delay_us(100);
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,RESET);
-      osDelay(1);
+      Delay_us(100);
     }
 
     osDelay(1);
