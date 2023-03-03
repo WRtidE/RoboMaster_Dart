@@ -6,7 +6,7 @@ extern CAN_HandleTypeDef hcan1;
 void pid_init(pid_struct_t *pid,
               float kp,
               float ki,
-              float kd,
+              float kd,    
               float i_max,
               float out_max)
 {

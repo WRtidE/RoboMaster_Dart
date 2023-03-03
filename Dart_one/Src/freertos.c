@@ -268,41 +268,48 @@ void dart_tb660_init(void const * argument)
 {
   /* USER CODE BEGIN dart_tb660_init */
   /* Infinite loop */
+
+  //设置步进电机转速(50是可以的，10不行)
+  uint8_t set_speed = 100;
+
   for(;;)
   {
+    //防噪音
+    while(rc_ctrl.rc.ch[0]<300||((rc_ctrl.rc.ch[0]>900 && rc_ctrl.rc.ch[0]<1300)&&(rc_ctrl.rc.ch[3]>900 && rc_ctrl.rc.ch[3]<1300)))
+    {
+    }
+    //控制电机
     if(rc_ctrl.rc.ch[0]<900)
     { 
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_14,SET);
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,SET);
-      Delay_us(10);
+      Delay_us(set_speed);
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,RESET);
-      Delay_us(10);
+      Delay_us(set_speed);
     }
     if(rc_ctrl.rc.ch[0]>1300)
     { 
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_14,RESET);
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,SET);
-      Delay_us(10);
+      Delay_us(set_speed);
       HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13,RESET);
-      Delay_us(10);
+      Delay_us(set_speed);
     }
-    if(rc_ctrl.rc.ch[3]<900)
+    if(rc_ctrl.rc.ch[3]>900)
     { 
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_7,SET);
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,SET);
-      // osDelay(1);
-      Delay_us(100);
+      Delay_us(set_speed);
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,RESET);
-      // osDelay(1);
-      Delay_us(100);
+      Delay_us(set_speed);
     }
-    if(rc_ctrl.rc.ch[3]>1300)
+    if(rc_ctrl.rc.ch[3]<1300)
     { 
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_7,RESET);
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,SET);
-      Delay_us(100);
+      Delay_us(set_speed);
       HAL_GPIO_WritePin(GPIOI,GPIO_PIN_2,RESET);
-      Delay_us(100);
+      Delay_us(set_speed);
     }
 
     osDelay(1);
