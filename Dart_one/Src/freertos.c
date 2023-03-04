@@ -184,10 +184,10 @@ void dart_shoot_init(void const * argument)
     {
       HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
       //给出速度期望值
-      dart.motor[0].target_speed =  9000; 
-      dart.motor[1].target_speed =  9000;
-      dart.motor[2].target_speed = -9000;
-      dart.motor[3].target_speed = -9000;
+      dart.motor[0].target_speed =  10000; 
+      dart.motor[1].target_speed =  10000;
+      dart.motor[2].target_speed = -10000;
+      dart.motor[3].target_speed = -10000;
     }
     else 
     {
