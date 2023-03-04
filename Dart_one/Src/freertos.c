@@ -166,7 +166,12 @@ void StartDefaultTask(void const * argument)
 void dart_shoot_init(void const * argument)
 {
   /* USER CODE BEGIN dart_shoot_init */
+
   dart_shoot_reset(&dart);
+  //初始速度设置为10000则击打25m，设置为6700则击打16m
+
+  fp32 target_speed_set = 6700;
+  
   //启动飞镖pid初始化
   pid_init(&dart.motor_speed_pid[0], 10, 0.01, 0, 30000,30000); 
   pid_init(&dart.motor_speed_pid[1], 10, 0.01, 0, 30000,30000);
@@ -184,10 +189,10 @@ void dart_shoot_init(void const * argument)
     {
       HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
       //给出速度期望值
-      dart.motor[0].target_speed =  10000; 
-      dart.motor[1].target_speed =  10000;
-      dart.motor[2].target_speed = -10000;
-      dart.motor[3].target_speed = -10000;
+      dart.motor[0].target_speed =  target_speed_set; 
+      dart.motor[1].target_speed =  target_speed_set;
+      dart.motor[2].target_speed = -target_speed_set;
+      dart.motor[3].target_speed = -target_speed_set;
     }
     else 
     {
