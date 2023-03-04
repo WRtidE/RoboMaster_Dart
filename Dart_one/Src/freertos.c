@@ -170,7 +170,7 @@ void dart_shoot_init(void const * argument)
   dart_shoot_reset(&dart);
   //初始速度设置为10000则击打25m，设置为6700则击打16m
 
-  fp32 target_speed_set = 6700;
+  fp32 target_speed_set = 10000;
   
   //启动飞镖pid初始化
   pid_init(&dart.motor_speed_pid[0], 10, 0.01, 0, 30000,30000); 
@@ -185,7 +185,7 @@ void dart_shoot_init(void const * argument)
     //遥控器右边s2按键控制飞镖发射
     //s1拨动至0或者1时飞镖停止
     //s1拨动至2时飞镖全速发射           
-    if(rc_ctrl.rc.s[0]==1) //飞标发射
+    if(rc_ctrl.rc.s[0]==1) // 向前拨飞标发射，速度为10000
     {
       HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
       //给出速度期望值
@@ -194,6 +194,16 @@ void dart_shoot_init(void const * argument)
       dart.motor[2].target_speed = -target_speed_set;
       dart.motor[3].target_speed = -target_speed_set;
     }
+    else if (rc_ctrl.rc.s[0]==2)// 向后拨飞标发射，速度为6700
+    {
+      HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
+      //给出速度期望值
+      dart.motor[0].target_speed =  6700; 
+      dart.motor[1].target_speed =  6700;
+      dart.motor[2].target_speed = -6700;
+      dart.motor[3].target_speed = -6700;
+    }
+    
     else 
     {
             //给出速度期望值
