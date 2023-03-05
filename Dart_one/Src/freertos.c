@@ -168,9 +168,10 @@ void dart_shoot_init(void const * argument)
   /* USER CODE BEGIN dart_shoot_init */
 
   dart_shoot_reset(&dart);
-  //初始速度设置为10000则击打25m，设置为6700则击打16m
 
-  fp32 target_speed_set = 10000;
+  //初始速度设置为10000则击打25m，设置为6700则击打16m
+  fp32 target_speed_set_1 = 10000;
+  fp32 target_speed_set_2 = 6700;
   
   //启动飞镖pid初始化
   pid_init(&dart.motor_speed_pid[0], 10, 0.01, 0, 30000,30000); 
@@ -189,24 +190,22 @@ void dart_shoot_init(void const * argument)
     {
       HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
       //给出速度期望值
-      dart.motor[0].target_speed =  target_speed_set; 
-      dart.motor[1].target_speed =  target_speed_set;
-      dart.motor[2].target_speed = -target_speed_set;
-      dart.motor[3].target_speed = -target_speed_set;
+      dart.motor[0].target_speed =  target_speed_set_1; 
+      dart.motor[1].target_speed =  target_speed_set_1;
+      dart.motor[2].target_speed = -target_speed_set_1;
+      dart.motor[3].target_speed = -target_speed_set_1;
     }
     else if (rc_ctrl.rc.s[0]==2)// 向后拨飞标发射，速度为6700
     {
       HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
       //给出速度期望值
-      dart.motor[0].target_speed =  6700; 
-      dart.motor[1].target_speed =  6700;
-      dart.motor[2].target_speed = -6700;
-      dart.motor[3].target_speed = -6700;
+      dart.motor[0].target_speed =  target_speed_set_2; 
+      dart.motor[1].target_speed =  target_speed_set_2;
+      dart.motor[2].target_speed = -target_speed_set_2;
+      dart.motor[3].target_speed = -target_speed_set_2;
     }
-    
-    else 
+    else //中间速度置0
     {
-            //给出速度期望值
       dart.motor[0].target_speed =  0;
       dart.motor[1].target_speed =  0;
       dart.motor[2].target_speed =  0;
@@ -247,14 +246,17 @@ void dart_reload_init(void const * argument)
   /* Infinite loop */
   for(;;)
   {
+    //设置装填速度
+    fp32 target_speed_set_3 = 20000;
+    
     if(rc_ctrl.rc.s[1]==1)//向上装填
     {
       //给出速度期望值
-      dart.motor[4].target_speed =  20000;
+      dart.motor[4].target_speed =  target_speed_set_3;
     }
     else if(rc_ctrl.rc.s[1]==2)//向下
     {
-      dart.motor[4].target_speed = -20000;
+      dart.motor[4].target_speed = -target_speed_set_3;
     }
     else
     {
